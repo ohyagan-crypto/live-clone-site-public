@@ -65,11 +65,48 @@
         </section>
 
         <section class="container live-layout" aria-label="直播觀看區">
+          <section class="stream-console" aria-label="螢幕直播控制台">
+            <article class="console-card teacher-card">
+              <div>
+                <span class="console-label">老師端</span>
+                <h2>同步展示我的電腦畫面</h2>
+                <p class="desktop-copy">按下開播後選擇要分享的螢幕或視窗，學員用教室碼或連結即可觀看。</p>
+                <p class="mobile-copy">按下開播後選擇螢幕，學員用教室碼觀看。</p>
+              </div>
+              <div class="console-actions">
+                <button class="primary-action" type="button" id="startShare">老師開播</button>
+                <button class="outline-action" type="button" id="stopShare" disabled>停止直播</button>
+                <button class="outline-action" type="button" id="copyStudentLink" disabled>複製學員連結</button>
+              </div>
+              <div class="room-line">
+                <label for="roomCode">教室碼</label>
+                <input id="roomCode" type="text" value="尚未開播" readonly />
+              </div>
+              <p class="console-status" id="teacherStatus">尚未開播，等待老師啟動螢幕分享。</p>
+              <p class="console-status subtle" id="studentCount">目前 0 位學員連線</p>
+            </article>
+
+            <article class="console-card student-card">
+              <div>
+                <span class="console-label">學員端</span>
+                <h2>加入直播教室</h2>
+                <p class="desktop-copy">學員輸入老師提供的教室碼，或直接打開老師複製的學員連結。</p>
+                <p class="mobile-copy">輸入老師提供的教室碼即可觀看。</p>
+              </div>
+              <form class="join-form" id="joinForm">
+                <input id="studentRoomInput" type="text" placeholder="輸入教室碼" autocomplete="off" />
+                <button class="primary-action" type="submit">加入觀看</button>
+              </form>
+              <p class="console-status" id="studentStatus">尚未加入教室。</p>
+            </article>
+          </section>
+
           <div class="player-stack">
             <div class="video-and-share">
               <section class="player-card" id="player">
                 <div class="player-screen">
-                  <img src="./assets/live-cover.jpeg" alt="直播封面" />
+                  <video id="liveVideo" class="live-video" autoplay playsinline></video>
+                  <img id="coverImage" src="./assets/live-cover.jpeg" alt="直播封面" />
                   <div class="player-overlay"></div>
                   <button class="play-toggle" type="button" id="playToggle" aria-label="播放或暫停">
                     <span></span>
@@ -234,6 +271,7 @@
       </form>
     </dialog>
 
+    <script src="https://unpkg.com/peerjs@1.5.5/dist/peerjs.min.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>
