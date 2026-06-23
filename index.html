@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>X 學院公開課｜直播觀看頁</title>
+    <meta
+      name="description"
+      content="可替換品牌、直播串流、聊天室、掃碼分享、簽到與有獎答題的直播網站復刻版。"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="#top" aria-label="回到直播頁">
+            <span class="brand-mark">X</span>
+            <span class="brand-text">X 學院空中課堂</span>
+          </a>
+
+          <div class="live-tip">
+            <span class="live-dot" aria-hidden="true"></span>
+            <span>頻道直播中，</span>
+            <a href="#player">去看看</a>
+          </div>
+
+          <div class="user-box">
+            <span class="user-avatar" aria-hidden="true"></span>
+            <button class="login-button" type="button">未登入</button>
+          </div>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="hero-band">
+          <div class="container title-layout">
+            <div class="title-copy">
+              <div class="play-type">直播</div>
+              <h1>X 學院公開課《下一個萬億級賽道，已經開啟》</h1>
+              <p>
+                <span id="liveTime">06-23 09:49 開播</span>
+                <span class="viewer-pill"><b id="viewerCount">1,328</b> 人氣</span>
+              </p>
+            </div>
+
+            <div class="quick-actions">
+              <div class="qr-trigger" tabindex="0">
+                二維碼
+                <div class="qr-popover">
+                  <div class="fake-qr" aria-label="示意 QR Code">
+                    <span></span>
+                  </div>
+                  <p>微信掃碼觀看或分享</p>
+                  <div class="copy-row">
+                    <input value="https://example.com/live/x-academy" readonly />
+                    <button type="button" data-copy>複製</button>
+                  </div>
+                </div>
+              </div>
+              <button class="outline-action" type="button" id="signButton">簽到</button>
+              <button class="outline-action" type="button" id="quizButton">有獎答題</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="container live-layout" aria-label="直播觀看區">
+          <div class="player-stack">
+            <div class="video-and-share">
+              <section class="player-card" id="player">
+                <div class="player-screen">
+                  <img src="./assets/live-cover.jpeg" alt="直播封面" />
+                  <div class="player-overlay"></div>
+                  <button class="play-toggle" type="button" id="playToggle" aria-label="播放或暫停">
+                    <span></span>
+                  </button>
+                  <div class="player-status">
+                    <span class="live-dot" aria-hidden="true"></span>
+                    <strong>直播中</strong>
+                  </div>
+                </div>
+
+                <div class="player-controls">
+                  <button class="control-icon" type="button" id="muteToggle">音</button>
+                  <div class="progress-track" aria-label="播放進度">
+                    <span id="progressBar"></span>
+                  </div>
+                  <span class="time-label" id="timeLabel">01:56:47 / 10:49:04</span>
+                  <button class="control-chip" type="button">倍速 1.0x</button>
+                  <button class="control-chip" type="button">高清</button>
+                  <button class="control-chip" type="button">全螢幕</button>
+                </div>
+              </section>
+
+              <aside class="share-rail">
+                <div class="ad-box">
+                  <strong>盟主直播助手</strong>
+                  <span>觀看、互動、轉發一頁完成</span>
+                </div>
+                <div class="scan-card">
+                  <div class="scan-icon" aria-hidden="true"></div>
+                  <strong>微信掃碼觀看</strong>
+                </div>
+              </aside>
+            </div>
+
+            <section class="interaction-panel">
+              <div class="window-switch">
+                <button class="window-button" type="button">切換窗口</button>
+              </div>
+
+              <div class="chat-area">
+                <div class="panel-title">
+                  <h2>互動</h2>
+                  <span id="onlineCount">1,328 人在線</span>
+                </div>
+                <div class="chat-list" id="chatList" aria-live="polite">
+                  <article class="chat-item system">
+                    <span>系統</span>
+                    <p>歡迎來到 X 學院空中課堂，請遵守直播互動規範。</p>
+                  </article>
+                  <article class="chat-item">
+                    <span>遊客174189</span>
+                    <p>老師好，請問回放會保留多久？</p>
+                  </article>
+                  <article class="chat-item">
+                    <span>林同學</span>
+                    <p>畫面很清楚，聲音也正常。</p>
+                  </article>
+                  <article class="chat-item">
+                    <span>主持人</span>
+                    <p>稍後會整理今日課程重點，請大家先完成簽到。</p>
+                  </article>
+                </div>
+                <form class="speak-area" id="chatForm">
+                  <input id="chatInput" type="text" placeholder="輸入訊息參與互動" autocomplete="off" />
+                  <button type="submit">發送</button>
+                </form>
+              </div>
+            </section>
+          </div>
+
+          <section class="content-tabs" aria-label="直播內容">
+            <div class="tab-bar" role="tablist">
+              <button class="tab-button is-active" type="button" data-tab="chat">互動</button>
+              <button class="tab-button" type="button" data-tab="summary">簡介</button>
+              <button class="tab-button" type="button" data-tab="qa">提問</button>
+              <button class="tab-button" type="button" data-tab="replay">回放</button>
+            </div>
+
+            <div class="tab-content">
+              <section class="tab-pane is-active" data-pane="chat">
+                <div class="compact-chat" id="mobileChatList"></div>
+              </section>
+
+              <section class="tab-pane summary-pane" data-pane="summary">
+                <h2>直播簡介</h2>
+                <p>
+                  這是以企業直播觀看頁為參考重做的前端模板，包含上方頻道資訊、直播播放器、掃碼分享、
+                  即時互動、簽到、有獎答題與匿名提問。實際上線時可替換為正式品牌、直播串流、QR Code、
+                  課程介紹、會員登入與後台資料。
+                </p>
+              </section>
+
+              <section class="tab-pane qa-pane" data-pane="qa">
+                <h2>匿名提問</h2>
+                <form class="qa-form" id="qaForm">
+                  <textarea id="qaInput" placeholder="請輸入您的問題，準確描述問題更容易得到解答"></textarea>
+                  <div class="qa-actions">
+                    <label>
+                      <input type="checkbox" checked />
+                      匿名提問
+                    </label>
+                    <button type="submit">發布問題</button>
+                  </div>
+                </form>
+                <div class="question-list" id="questionList">
+                  <article>
+                    <strong>Q：是否能下載講義？</strong>
+                    <p>A：可由主辦方開啟文件下載權限，或於課後寄送。</p>
+                  </article>
+                </div>
+              </section>
+
+              <section class="tab-pane replay-pane" data-pane="replay">
+                <div class="empty-state">
+                  <span></span>
+                  <p>正在取得回放資訊</p>
+                </div>
+              </section>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <nav>
+          <a href="#">盟主官網</a>
+          <a href="#">關於盟主</a>
+        </nav>
+        <p>© 2026 Live Clone Demo. 本頁為可替換素材的直播網站前端範本。</p>
+      </footer>
+    </div>
+
+    <div class="hook-card" id="hookCard" aria-live="polite">
+      <div>
+        <strong>微信提示</strong>
+        <p>偵測到長時間未互動，請點擊下方按鈕解除掛機提醒。</p>
+        <button type="button" id="releaseHook">解除</button>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <dialog class="modal" id="signModal">
+      <form method="dialog">
+        <button class="close-button" type="submit" aria-label="關閉">×</button>
+        <h2>今日簽到完成</h2>
+        <p>您已完成本場直播簽到，課後可依主辦方設定取得回放與講義。</p>
+        <button class="primary-action" type="submit">知道了</button>
+      </form>
+    </dialog>
+
+    <dialog class="modal" id="quizModal">
+      <form method="dialog">
+        <button class="close-button" type="submit" aria-label="關閉">×</button>
+        <h2>有獎答題</h2>
+        <p>範例題：這個直播頁模板是否可以替換為正式品牌內容？</p>
+        <div class="quiz-options">
+          <button type="button" data-answer="yes">可以</button>
+          <button type="button" data-answer="no">不可以</button>
+        </div>
+        <p class="quiz-result" id="quizResult"></p>
+      </form>
+    </dialog>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
