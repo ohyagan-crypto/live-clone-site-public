@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>X 學院公開課｜直播觀看頁</title>
+    <title>X 學院空中課堂｜直播教室</title>
     <meta
       name="description"
-      content="可替換品牌、直播串流、聊天室、掃碼分享、簽到與有獎答題的直播網站復刻版。"
+      content="乾淨的線上直播教室，支援老師開播、學員加入、聊天室、簽到與提問。"
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -21,8 +21,8 @@
 
           <div class="live-tip">
             <span class="live-dot" aria-hidden="true"></span>
-            <span>頻道直播中，</span>
-            <a href="#player">去看看</a>
+            <span>直播教室待命中，</span>
+            <a href="#player">查看教室</a>
           </div>
 
           <div class="user-box">
@@ -36,24 +36,24 @@
         <section class="hero-band">
           <div class="container title-layout">
             <div class="title-copy">
-              <div class="play-type">直播</div>
-              <h1>X 學院公開課《下一個萬億級賽道，已經開啟》</h1>
+              <div class="play-type">線上直播</div>
+              <h1>X 學院空中課堂</h1>
               <p>
-                <span id="liveTime">06-23 09:49 開播</span>
-                <span class="viewer-pill"><b id="viewerCount">1,328</b> 人氣</span>
+                <span id="liveTime">尚未開播</span>
+                <span class="viewer-pill"><b id="viewerCount">0</b> 人在線</span>
               </p>
             </div>
 
             <div class="quick-actions">
               <div class="qr-trigger" tabindex="0">
-                二維碼
+                分享
                 <div class="qr-popover">
                   <div class="fake-qr" aria-label="示意 QR Code">
                     <span></span>
                   </div>
-                  <p>微信掃碼觀看或分享</p>
+                  <p>分享本教室連結</p>
                   <div class="copy-row">
-                    <input value="https://example.com/live/x-academy" readonly />
+                    <input value="https://ohyagan-crypto.github.io/live-clone-site-public/" readonly />
                     <button type="button" data-copy>複製</button>
                   </div>
                 </div>
@@ -106,14 +106,18 @@
               <section class="player-card" id="player">
                 <div class="player-screen">
                   <video id="liveVideo" class="live-video" autoplay playsinline></video>
-                  <img id="coverImage" src="./assets/live-cover.jpeg" alt="直播封面" />
+                  <div id="coverImage" class="idle-screen" role="img" aria-label="尚未開播">
+                    <div class="idle-mark" aria-hidden="true">X</div>
+                    <strong>尚未開播</strong>
+                    <span>老師開播後，直播畫面會在這裡顯示。</span>
+                  </div>
                   <div class="player-overlay"></div>
                   <button class="play-toggle" type="button" id="playToggle" aria-label="播放或暫停">
                     <span></span>
                   </button>
                   <div class="player-status">
                     <span class="live-dot" aria-hidden="true"></span>
-                    <strong>直播中</strong>
+                    <strong>待命中</strong>
                   </div>
                 </div>
 
@@ -122,7 +126,7 @@
                   <div class="progress-track" aria-label="播放進度">
                     <span id="progressBar"></span>
                   </div>
-                  <span class="time-label" id="timeLabel">01:56:47 / 10:49:04</span>
+                  <span class="time-label" id="timeLabel">00:00:00 / 尚未開播</span>
                   <button class="control-chip" type="button">倍速 1.0x</button>
                   <button class="control-chip" type="button">高清</button>
                   <button class="control-chip" type="button">全螢幕</button>
@@ -131,12 +135,12 @@
 
               <aside class="share-rail">
                 <div class="ad-box">
-                  <strong>盟主直播助手</strong>
-                  <span>觀看、互動、轉發一頁完成</span>
+                  <strong>教室狀態</strong>
+                  <span>等待老師開播</span>
                 </div>
                 <div class="scan-card">
                   <div class="scan-icon" aria-hidden="true"></div>
-                  <strong>微信掃碼觀看</strong>
+                  <strong>分享教室</strong>
                 </div>
               </aside>
             </div>
@@ -149,24 +153,12 @@
               <div class="chat-area">
                 <div class="panel-title">
                   <h2>互動</h2>
-                  <span id="onlineCount">1,328 人在線</span>
+                  <span id="onlineCount">0 人在線</span>
                 </div>
                 <div class="chat-list" id="chatList" aria-live="polite">
                   <article class="chat-item system">
                     <span>系統</span>
-                    <p>歡迎來到 X 學院空中課堂，請遵守直播互動規範。</p>
-                  </article>
-                  <article class="chat-item">
-                    <span>遊客174189</span>
-                    <p>老師好，請問回放會保留多久？</p>
-                  </article>
-                  <article class="chat-item">
-                    <span>林同學</span>
-                    <p>畫面很清楚，聲音也正常。</p>
-                  </article>
-                  <article class="chat-item">
-                    <span>主持人</span>
-                    <p>稍後會整理今日課程重點，請大家先完成簽到。</p>
+                    <p>直播教室已準備完成，請等待老師開播。</p>
                   </article>
                 </div>
                 <form class="speak-area" id="chatForm">
@@ -193,9 +185,8 @@
               <section class="tab-pane summary-pane" data-pane="summary">
                 <h2>直播簡介</h2>
                 <p>
-                  這是以企業直播觀看頁為參考重做的前端模板，包含上方頻道資訊、直播播放器、掃碼分享、
-                  即時互動、簽到、有獎答題與匿名提問。實際上線時可替換為正式品牌、直播串流、QR Code、
-                  課程介紹、會員登入與後台資料。
+                  這是 X 學院空中課堂的直播教室頁面。老師可以在本頁啟動螢幕分享，學員可用教室碼或連結加入觀看，
+                  並透過聊天室、簽到、答題與提問功能參與課程。
                 </p>
               </section>
 
@@ -222,7 +213,7 @@
               <section class="tab-pane replay-pane" data-pane="replay">
                 <div class="empty-state">
                   <span></span>
-                  <p>正在取得回放資訊</p>
+                  <p>尚無回放資訊</p>
                 </div>
               </section>
             </div>
@@ -232,19 +223,11 @@
 
       <footer class="site-footer">
         <nav>
-          <a href="#">盟主官網</a>
-          <a href="#">關於盟主</a>
+          <a href="#top">回到頂部</a>
+          <a href="#player">直播教室</a>
         </nav>
-        <p>© 2026 Live Clone Demo. 本頁為可替換素材的直播網站前端範本。</p>
+        <p>© 2026 X 學院空中課堂。</p>
       </footer>
-    </div>
-
-    <div class="hook-card" id="hookCard" aria-live="polite">
-      <div>
-        <strong>微信提示</strong>
-        <p>偵測到長時間未互動，請點擊下方按鈕解除掛機提醒。</p>
-        <button type="button" id="releaseHook">解除</button>
-      </div>
     </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>

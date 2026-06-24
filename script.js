@@ -14,10 +14,10 @@ const questionList = document.querySelector("#questionList");
 const signModal = document.querySelector("#signModal");
 const quizModal = document.querySelector("#quizModal");
 const quizResult = document.querySelector("#quizResult");
-const hookCard = document.querySelector("#hookCard");
 const liveVideo = document.querySelector("#liveVideo");
 const coverImage = document.querySelector("#coverImage");
 const playerScreen = document.querySelector(".player-screen");
+const playerStatusLabel = document.querySelector(".player-status strong");
 const startShare = document.querySelector("#startShare");
 const stopShare = document.querySelector("#stopShare");
 const copyStudentLink = document.querySelector("#copyStudentLink");
@@ -29,8 +29,8 @@ const studentRoomInput = document.querySelector("#studentRoomInput");
 const studentStatus = document.querySelector("#studentStatus");
 
 let isPlaying = false;
-let progress = 18;
-let viewers = 1328;
+let progress = 0;
+let viewers = 0;
 let teacherPeer = null;
 let studentPeer = null;
 let screenStream = null;
@@ -54,10 +54,12 @@ function formatSeconds(seconds) {
 
 function updateProgress() {
   if (!progressBar || !timeLabel) return;
-  const total = 38944;
-  const seconds = Math.floor((progress / 100) * total);
   progressBar.style.width = `${progress}%`;
-  timeLabel.textContent = `${formatSeconds(seconds)} / 10:49:04`;
+  if (!liveVideo?.srcObject) {
+    timeLabel.textContent = "00:00:00 / 尚未開播";
+    return;
+  }
+  timeLabel.textContent = `${formatSeconds(Math.floor(liveVideo.currentTime || 0))} / 直播中`;
 }
 
 function syncMobileChat() {
@@ -82,6 +84,7 @@ function setLiveVideo(stream, muted) {
   liveVideo.muted = muted;
   playerScreen?.classList.add("is-live");
   coverImage?.setAttribute("aria-hidden", "true");
+  if (playerStatusLabel) playerStatusLabel.textContent = "直播中";
   liveVideo.play().catch(() => showToast("請點一下播放器開始播放"));
   isPlaying = true;
   playToggle?.classList.add("is-playing");
@@ -93,6 +96,7 @@ function clearLiveVideo() {
   liveVideo.srcObject = null;
   playerScreen?.classList.remove("is-live");
   coverImage?.removeAttribute("aria-hidden");
+  if (playerStatusLabel) playerStatusLabel.textContent = "待命中";
   isPlaying = false;
   playToggle?.classList.remove("is-playing");
 }
@@ -160,6 +164,8 @@ async function startLiveShare() {
       if (teacherStatus) {
         teacherStatus.textContent = "直播中。把教室碼或學員連結給學員，他們就能看到你的電腦畫面。";
       }
+      if (viewerCount) viewerCount.textContent = "0";
+      if (onlineCount) onlineCount.textContent = "0 人在線";
       if (stopShare) stopShare.disabled = false;
       if (copyStudentLink) copyStudentLink.disabled = false;
       showToast("老師端已開播");
@@ -243,7 +249,7 @@ playToggle?.addEventListener("click", () => {
     isPlaying = !isPlaying;
   }
   playToggle.classList.toggle("is-playing", isPlaying);
-  showToast(isPlaying ? "已開始播放直播" : "已暫停播放");
+  showToast(isPlaying ? "等待老師開播" : "已暫停播放");
 });
 
 document.querySelector("#muteToggle")?.addEventListener("click", () => {
@@ -290,11 +296,6 @@ document.querySelector("#signButton")?.addEventListener("click", () => {
 document.querySelector("#quizButton")?.addEventListener("click", () => {
   if (quizResult) quizResult.textContent = "";
   quizModal?.showModal();
-});
-
-document.querySelector("#releaseHook")?.addEventListener("click", () => {
-  hookCard?.classList.remove("is-visible");
-  showToast("已解除掛機提醒");
 });
 
 document.querySelectorAll("[data-answer]").forEach((button) => {
@@ -346,16 +347,10 @@ window.setInterval(() => {
 }, 1200);
 
 window.setInterval(() => {
-  viewers += Math.random() > 0.42 ? 1 : -1;
-  viewers = Math.max(1280, viewers);
   const label = viewers.toLocaleString("zh-TW");
   if (viewerCount) viewerCount.textContent = label;
   if (onlineCount) onlineCount.textContent = `${label} 人在線`;
 }, 2800);
-
-window.setTimeout(() => {
-  if (!isPlaying && !liveVideo?.srcObject) hookCard?.classList.add("is-visible");
-}, 12000);
 
 const urlRoom = new URLSearchParams(window.location.search).get("room");
 if (urlRoom && studentRoomInput) {
