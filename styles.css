@@ -471,6 +471,27 @@ h1 {
   overflow: hidden;
 }
 
+.youtube-player {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  border: 0;
+  background: #000;
+}
+
+.youtube-player-note {
+  display: flex;
+  min-height: 56px;
+  padding: 10px 14px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #f4f4f4;
+  background: #111;
+  font-size: 13px;
+}
+
 .idle-screen {
   position: relative;
   display: grid;
@@ -795,6 +816,13 @@ h1 {
   padding: 0 18px;
   color: white;
   background: var(--brand);
+}
+
+.action-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
 }
 
 .content-tabs {
