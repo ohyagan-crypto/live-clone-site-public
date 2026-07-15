@@ -27,7 +27,7 @@
 
           <div class="user-box">
             <span class="user-avatar" aria-hidden="true"></span>
-            <button class="login-button" type="button">未登入</button>
+            <button class="login-button" type="button" id="teacherPanelButton">老師控制台</button>
           </div>
         </div>
       </header>
@@ -43,6 +43,18 @@
                 <span id="liveTime">尚未開播</span>
                 <span class="viewer-pill"><b id="viewerCount">0</b> 人在線</span>
               </p>
+              <div class="countdown-strip" id="countdownCard">
+                <div>
+                  <small>下一場直播</small>
+                  <strong id="nextLiveTitle">課程時間待公布</strong>
+                </div>
+                <div class="countdown-numbers" aria-label="直播倒數">
+                  <span><b id="countdownDays">00</b><small>天</small></span>
+                  <span><b id="countdownHours">00</b><small>時</small></span>
+                  <span><b id="countdownMinutes">00</b><small>分</small></span>
+                  <span><b id="countdownSeconds">00</b><small>秒</small></span>
+                </div>
+              </div>
             </div>
 
             <div class="quick-actions">
@@ -62,6 +74,13 @@
               <button class="outline-action" type="button" id="signButton">簽到</button>
               <button class="outline-action" type="button" id="quizButton">有獎答題</button>
             </div>
+          </div>
+        </section>
+
+        <section class="announcement-bar" id="announcementBar" aria-live="polite">
+          <div class="container announcement-inner">
+            <span>課堂公告</span>
+            <p id="announcementText">歡迎來到藍星科技空中課堂，請於開課前完成簽到。</p>
           </div>
         </section>
 
@@ -94,7 +113,7 @@
                 <p class="mobile-copy">老師開播後重新整理本頁即可觀看。</p>
               </div>
               <button class="primary-action" type="button" id="refreshPlayer">重新整理直播畫面</button>
-              <p class="console-status" id="studentStatus">YouTube 頻道已串接，等待老師開播。</p>
+              <p class="console-status" id="studentStatus">尚未簽到；完成簽到後會開始記錄本機觀看時間。</p>
             </article>
           </section>
 
@@ -163,6 +182,8 @@
               <button class="tab-button is-active" type="button" data-tab="chat">互動</button>
               <button class="tab-button" type="button" data-tab="summary">簡介</button>
               <button class="tab-button" type="button" data-tab="qa">提問</button>
+              <button class="tab-button" type="button" data-tab="resources">講義</button>
+              <button class="tab-button" type="button" data-tab="poll">投票</button>
               <button class="tab-button" type="button" data-tab="replay">回放</button>
             </div>
 
@@ -177,6 +198,11 @@
                   這是藍星科技空中課堂的智慧直播教室。老師使用 OBS 推流到 YouTube，學員留在本頁觀看，
                   並透過原有聊天室、簽到、答題與提問功能參與課程。
                 </p>
+                <div class="course-facts">
+                  <article><small>本場課程</small><strong id="courseTitleDisplay">藍星科技線上課程</strong></article>
+                  <article><small>授課老師</small><strong id="teacherNameDisplay">藍星科技講師團隊</strong></article>
+                  <article><small>我的狀態</small><strong id="attendanceStatus">尚未簽到</strong></article>
+                </div>
               </section>
 
               <section class="tab-pane qa-pane" data-pane="qa">
@@ -191,19 +217,22 @@
                     <button type="submit">發布問題</button>
                   </div>
                 </form>
-                <div class="question-list" id="questionList">
-                  <article>
-                    <strong>Q：是否能下載講義？</strong>
-                    <p>A：可由主辦方開啟文件下載權限，或於課後寄送。</p>
-                  </article>
+                <div class="question-list" id="questionList"></div>
+              </section>
+
+              <section class="tab-pane resources-pane" data-pane="resources">
+                <div class="resource-heading">
+                  <div><h2>課程講義</h2><p>老師發布的教材與下載連結會顯示在這裡。</p></div>
                 </div>
+                <div class="resource-grid" id="resourceList"></div>
+              </section>
+
+              <section class="tab-pane poll-pane" data-pane="poll">
+                <div class="poll-shell" id="pollShell"></div>
               </section>
 
               <section class="tab-pane replay-pane" data-pane="replay">
-                <div class="empty-state">
-                  <span></span>
-                  <p>尚無回放資訊</p>
-                </div>
+                <div class="resource-grid" id="replayList"></div>
               </section>
             </div>
           </section>
@@ -222,11 +251,16 @@
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <dialog class="modal" id="signModal">
-      <form method="dialog">
-        <button class="close-button" type="submit" aria-label="關閉">×</button>
-        <h2>今日簽到完成</h2>
-        <p>您已完成本場直播簽到，課後可依主辦方設定取得回放與講義。</p>
-        <button class="primary-action" type="submit">知道了</button>
+      <form id="attendanceForm">
+        <button class="close-button" type="button" data-close-dialog="signModal" aria-label="關閉">×</button>
+        <h2>學員正式簽到</h2>
+        <p>簽到後會在此瀏覽器記錄登入時間與本次觀看時數。</p>
+        <div class="form-grid">
+          <label>姓名<input id="attendanceName" name="name" type="text" required autocomplete="name" /></label>
+          <label>電子信箱<input id="attendanceEmail" name="email" type="email" required autocomplete="email" /></label>
+          <label class="full-field">場次<input id="attendanceSession" name="session" type="text" value="藍星科技空中課堂" required /></label>
+        </div>
+        <button class="primary-action" type="submit">完成簽到</button>
       </form>
     </dialog>
 
@@ -234,13 +268,85 @@
       <form method="dialog">
         <button class="close-button" type="submit" aria-label="關閉">×</button>
         <h2>有獎答題</h2>
-        <p>範例題：這個直播頁模板是否可以替換為正式品牌內容？</p>
-        <div class="quiz-options">
-          <button type="button" data-answer="yes">可以</button>
-          <button type="button" data-answer="no">不可以</button>
-        </div>
-        <p class="quiz-result" id="quizResult"></p>
+        <p>目前的即時題目與統計已整合到「投票」分頁。</p>
+        <button class="primary-action" type="button" id="openPollTab">前往即時投票</button>
       </form>
+    </dialog>
+
+    <dialog class="teacher-panel" id="teacherPanel">
+      <div class="teacher-panel-shell">
+        <header class="teacher-panel-header">
+          <div><small>TEACHER CONTROL CENTER</small><h2>老師管理控制台</h2></div>
+          <button class="close-button" type="button" data-close-dialog="teacherPanel" aria-label="關閉">×</button>
+        </header>
+        <p class="local-data-note">目前設定與紀錄保存在這個瀏覽器，可直接匯出簽到名單；跨裝置同步需再串接雲端資料庫。</p>
+
+        <div class="admin-grid">
+          <section class="admin-card admin-wide">
+            <div class="admin-card-title"><h3>直播、課程與公告</h3><span>前台即時更新</span></div>
+            <form id="classSettingsForm" class="form-grid">
+              <label>課程名稱<input id="adminCourseTitle" type="text" required /></label>
+              <label>授課老師<input id="adminTeacherName" type="text" required /></label>
+              <label>直播狀態<select id="adminLiveStatus"><option>待命中</option><option>直播中</option><option>中場休息</option><option>本場結束</option></select></label>
+              <label>下一場時間<input id="adminNextLiveAt" type="datetime-local" /></label>
+              <label class="full-field">課堂公告<textarea id="adminAnnouncement" rows="3"></textarea></label>
+              <button class="primary-action" type="submit">儲存課堂設定</button>
+              <button class="outline-action" type="button" id="clearChatButton">清空聊天室</button>
+            </form>
+          </section>
+
+          <section class="admin-card">
+            <div class="admin-card-title"><h3>新增講義</h3><span>教材中心</span></div>
+            <form id="resourceForm" class="stack-form">
+              <input id="resourceTitle" type="text" placeholder="講義名稱" required />
+              <input id="resourceUrl" type="url" placeholder="下載網址" required />
+              <select id="resourceType"><option>PDF 講義</option><option>課程連結</option><option>補充教材</option></select>
+              <button class="primary-action" type="submit">發布講義</button>
+            </form>
+            <div class="admin-mini-list" id="adminResourceList"></div>
+          </section>
+
+          <section class="admin-card">
+            <div class="admin-card-title"><h3>新增回放</h3><span>課後觀看</span></div>
+            <form id="replayForm" class="stack-form">
+              <input id="replayTitle" type="text" placeholder="回放名稱" required />
+              <input id="replayUrl" type="url" placeholder="影片網址" required />
+              <input id="replayDate" type="date" required />
+              <button class="primary-action" type="submit">發布回放</button>
+            </form>
+            <div class="admin-mini-list" id="adminReplayList"></div>
+          </section>
+
+          <section class="admin-card admin-wide">
+            <div class="admin-card-title"><h3>即時投票與測驗</h3><span>每行一個選項</span></div>
+            <form id="pollForm" class="form-grid">
+              <label class="full-field">題目<input id="adminPollQuestion" type="text" placeholder="請輸入題目" required /></label>
+              <label class="full-field">選項<textarea id="adminPollOptions" rows="4" placeholder="選項一&#10;選項二&#10;選項三" required></textarea></label>
+              <button class="primary-action" type="submit">發布新投票</button>
+              <button class="outline-action" type="button" id="closePollButton">結束目前投票</button>
+            </form>
+          </section>
+
+          <section class="admin-card admin-wide">
+            <div class="admin-card-title"><h3>學員提問管理</h3><span>回覆、完成、刪除</span></div>
+            <div class="admin-question-list" id="adminQuestionList"></div>
+          </section>
+
+          <section class="admin-card admin-wide">
+            <div class="admin-card-title"><h3>簽到與觀看紀錄</h3><span id="attendanceCount">0 筆</span></div>
+            <div class="admin-actions-row">
+              <button class="primary-action" type="button" id="exportAttendanceButton">匯出 CSV</button>
+              <button class="outline-action danger-action" type="button" id="clearAttendanceButton">清除本機名單</button>
+            </div>
+            <div class="table-scroll">
+              <table class="attendance-table">
+                <thead><tr><th>姓名</th><th>信箱</th><th>場次</th><th>簽到時間</th><th>觀看時數</th></tr></thead>
+                <tbody id="attendanceTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
     </dialog>
 
     <script src="./script.js"></script>
